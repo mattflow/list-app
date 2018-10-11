@@ -11,6 +11,12 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(clientPath, 'index.html'));
 });
 
+app.get('/api', (req, res) => {
+  res.json({
+    message: 'Welcome to my API!',
+  });
+});
+
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
