@@ -5,6 +5,7 @@
   "main": "server.js",
   "private": true,
   "scripts": {
+    "preinstall": "cd client && yarn install",
     "start": "cd client && npm run build && cd .. && node server.js",
     "dev": "concurrently \"nodemon server.js\" \"cd client && npm start\"",
     "deploy": "git push heroku master"
