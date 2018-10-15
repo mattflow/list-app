@@ -47,7 +47,7 @@ if (process.env.NODE_ENV === 'production' && cluster.isMaster) {
     cluster.fork();
   });
 
-  cluster.on('exit', worker => {
+  cluster.on('exit', () => {
     cluster.fork();
   });
 } else {
