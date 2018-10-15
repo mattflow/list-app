@@ -1,32 +1,44 @@
 import React, { Component } from 'react';
-import TitleBar from './components/TitleBar';
-import './App.css';
+import Layout from './components/Layout';
+import Typography from '@material-ui/core/Typography';
+import { withStyles } from '@material-ui/core/styles';
 
+const styles = {
+  root: {
+    height: '100%',
+  },
+}
 class App extends Component {
   constructor() {
     super();
     this.state = {
-      message: 'Loading...',
+      lists: undefined,
     };
   }
 
   componentDidMount() {
-    fetch('api').then(response => response.json())
+    fetch('api/lists').then(response => response.json())
       .then(responseJson => {
         this.setState({
-          message: responseJson.message,
+          lists: responseJson,
         });
       });
   }
 
   render() {
+    const { classes } = this.props;
     return (
-      <div className="App">
-        <TitleBar title="List App" />
-        {this.state.message}
+      <div className={classes.root}>
+        <Layout>
+          {
+            this.state.lists ? this.state.lists.map(list => 
+              <Typography>{list.id}: {list.name}</Typography>
+            ) : <Typography>Loading...</Typography>
+          }
+        </Layout>
       </div>
     );
   }
 }
 
-export default App;
+export default withStyles(styles)(App);
