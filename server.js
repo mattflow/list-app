@@ -27,6 +27,19 @@ app.get('/api', (req, res) => {
   });
 });
 
+app.get('/api/lists', (req, res) => {
+  res.json([
+    {
+      id: 1,
+      name: 'Groceries',
+    },
+    {
+      id: 2,
+      name: 'Todos',
+    },
+  ]);
+});
+
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
