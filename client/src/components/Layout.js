@@ -41,7 +41,7 @@ const styles = theme => ({
     backgroundColor: theme.palette.background.default,
     padding: theme.spacing.unit * 3,
     [theme.breakpoints.up('md')]: {
-      marginLeft: drawerWidth,
+      width: `calc(100% - ${drawerWidth}px)`,
     },
     height: '100%',
   },
