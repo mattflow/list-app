@@ -1,10 +1,9 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const itemSchema = require('./itemSchema');
 
-const listSchema = new Schema({
+const itemSchema = new Schema({
   name: String,
-  favorited: {
+  checked: {
     type: Boolean,
     default: false,
   },
@@ -17,7 +16,6 @@ const listSchema = new Schema({
     type: Boolean,
     default: false,
   },
-  items: [itemSchema],
 });
 
-module.exports = listSchema;
+module.exports = itemSchema;
