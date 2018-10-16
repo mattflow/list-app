@@ -14,15 +14,16 @@ const theme = createMuiTheme({
   },
 });
 
-const styles = {
+const styles = theme => ({
   root: {
     height: '100%',
+    backgroundColor: theme.palette.background.default,
   },
   loadingCircle: {
     display: 'block',
     margin: 'auto',
   },
-};
+});
 class App extends Component {
   constructor() {
     super();
@@ -58,4 +59,4 @@ class App extends Component {
   }
 }
 
-export default withStyles(styles)(App);
+export default withStyles(styles, { withTheme: true })(App);

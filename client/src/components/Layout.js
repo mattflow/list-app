@@ -38,12 +38,10 @@ const styles = theme => ({
     width: drawerWidth,
   },
   content: {
-    backgroundColor: theme.palette.background.default,
     padding: theme.spacing.unit * 3,
     [theme.breakpoints.up('md')]: {
       marginLeft: drawerWidth,
     },
-    height: '100%',
   },
 });
 
