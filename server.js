@@ -8,7 +8,7 @@ const path = require('path');
 const cluster = require('cluster');
 const cpus = require('os').cpus();
 const mongoose = require('mongoose');
-const apiRouter = require('./apiRouter');
+const apiRouter = require('./routers/apiRouter');
 
 const port = process.env.PORT || 8080;
 const loggingType = process.env.LOGGING_TYPE || 'dev';

@@ -1,5 +1,5 @@
 const express = require('express');
-const listRouter = require('./routers/listRouter');
+const listRouter = require('./listRouter');
 const router = express.Router();
 
 router.get('/', (req, res) => {
@@ -8,6 +8,6 @@ router.get('/', (req, res) => {
   });
 });
 
-router.use('/lists', listRouter);
+router.use(`/${listRouter.prefix}`, listRouter);
 
 module.exports = router;

@@ -5,14 +5,34 @@ const mongoose = require('mongoose');
 
 const List = mongoose.model('List', listSchema);
 
-router.get('/', (req, res) => {
-  List.find({}, (err, docs) => {
-    if (err) {
-      res.send(err);
+router.prefix = 'lists';
+
+router.route('/')
+  .get((req, res) => {
+    List.find({}, (err, docs) => {
+      if (err) {
+        res.send(err);
+      } else {
+        res.json(docs);
+      }
+    });
+  })
+  .post((req, res) => {
+    console.log(req.body);
+    if (req.body.name) {
+      List.create({ name: req.body.name }, (err, list) => {
+        if (err) {
+          res.send(err);
+        } else {
+          res.json(list);
+        }
+      });
     } else {
-      res.json(docs);
+      res.json({
+        message: 'Name must be included',
+        success: false,
+      });
     }
   });
-});
 
 module.exports = router;
