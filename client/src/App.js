@@ -7,6 +7,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import blue from '@material-ui/core/colors/blue';
 import pink from '@material-ui/core/colors/pink';
 import shortid from 'shortid';
+import { listFetchIntervalSeconds } from './config';
 
 const theme = createMuiTheme({
   palette: {
@@ -26,8 +27,7 @@ const styles = theme => ({
   },
 });
 
-const fetchIntervalSeconds = 60;
-const fetchIntervalTime = fetchIntervalSeconds * 1000;
+const fetchIntervalTime = listFetchIntervalSeconds * 1000;
 
 class App extends Component {
   constructor() {
