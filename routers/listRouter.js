@@ -9,7 +9,7 @@ router.prefix = 'lists';
 
 router.route('/')
   .get((req, res) => {
-    List.find({}, (err, docs) => {
+    List.find({ archived: false }, (err, docs) => {
       if (err) {
         res.send(err);
       } else {
