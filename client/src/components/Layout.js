@@ -15,6 +15,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import HomeIcon from '@material-ui/icons/Home';
+import SettingsIcon from '@material-ui/icons/Settings';
 
 const drawerWidth = 240;
 
@@ -32,6 +33,9 @@ const styles = theme => ({
     [theme.breakpoints.up('md')]: {
       display: 'none',
     },
+  },
+  titleText: {
+    marginLeft: theme.spacing.unit * 2,
   },
   toolbar: theme.mixins.toolbar,
   drawerPaper: {
@@ -68,8 +72,13 @@ class Layout extends React.Component {
             </ListItemIcon>
             <ListItemText primary="Home" />
           </ListItem>
+          <ListItem button>
+            <ListItemIcon>
+              <SettingsIcon />
+            </ListItemIcon>
+            <ListItemText primary="Settings" />
+          </ListItem>
         </List>
-        <Divider />
       </div>
     );
 
@@ -85,7 +94,7 @@ class Layout extends React.Component {
             >
               <MenuIcon />
             </IconButton>
-            <Typography variant="h6" color="inherit" noWrap>
+            <Typography className={classes.titleText} variant="h6" color="inherit" noWrap>
               List App
             </Typography>
           </Toolbar>
