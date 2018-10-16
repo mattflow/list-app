@@ -15,6 +15,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import HomeIcon from '@material-ui/icons/Home';
 import SettingsIcon from '@material-ui/icons/Settings';
+import Grid from '@material-ui/core/Grid';
 
 const drawerWidth = 240;
 
@@ -127,7 +128,9 @@ class Layout extends React.Component {
         </Hidden>
         <main className={classes.content}>
           <div className={classes.toolbar} />
-          {this.props.children}
+          <Grid container spacing={16}>
+            {this.props.children}
+          </Grid>
         </main>
       </div>
     );

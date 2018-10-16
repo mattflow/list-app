@@ -7,7 +7,7 @@
   "scripts": {
     "preinstall": "cd client && yarn install",
     "start": "concurrently \"cd client && npm run build\" \"node --optimize_for_size --max_old_space_size=460 server\"",
-    "dev": "concurrently \"nodemon server.js\" \"cd client && npm start\"",
+    "dev": "concurrently \"nodemon --ignore client server.js\" \"cd client && npm start\"",
     "deploy": "git push heroku master"
   },
   "keywords": [],

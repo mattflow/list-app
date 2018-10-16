@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import Layout from './components/Layout';
-import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import blue from '@material-ui/core/colors/blue';
 import pink from '@material-ui/core/colors/pink';
 import shortid from 'shortid';
+import Grid from '@material-ui/core/Grid';
+import ListPaper from './components/ListPaper';
 import { listFetchIntervalSeconds } from './config';
 
 const theme = createMuiTheme({
@@ -64,9 +65,11 @@ class App extends Component {
         <div className={classes.root}>
           <Layout>
             {
-              this.state.lists ? this.state.lists.map((list, index) => 
-                <Typography key={shortid.generate()}>{index + 1}: {list.name}</Typography>
-              ) : <CircularProgress className={classes.loadingCircle} color="secondary" />
+              this.state.lists ? this.state.lists.map((list, index) => (
+                <Grid key={shortid.generate()} item xs={12} md={6}>
+                  <ListPaper name={list.name} createdAt={list.createdAt} />
+                </Grid>
+              )) : <CircularProgress className={classes.loadingCircle} color="secondary" />
             }
           </Layout>
         </div>
