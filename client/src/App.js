@@ -6,6 +6,7 @@ import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import blue from '@material-ui/core/colors/blue';
 import pink from '@material-ui/core/colors/pink';
+import shortid from 'shortid';
 
 const theme = createMuiTheme({
   palette: {
@@ -24,6 +25,10 @@ const styles = theme => ({
     margin: 'auto',
   },
 });
+
+const fetchIntervalSeconds = 60;
+const fetchIntervalTime = fetchIntervalSeconds * 1000;
+
 class App extends Component {
   constructor() {
     super();
@@ -32,13 +37,24 @@ class App extends Component {
     };
   }
 
-  componentDidMount() {
+  fetchLists = (cb) => {
     fetch('api/lists').then(response => response.json())
       .then(responseJson => {
         this.setState({
           lists: responseJson,
         });
+        cb && cb();
       });
+  }
+
+  componentDidMount() {
+    this.fetchLists(() => {
+      this.fetchInterval = window.setInterval(this.fetchLists, fetchIntervalTime);
+    });
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.fetchInterval);
   }
 
   render() {
@@ -48,8 +64,8 @@ class App extends Component {
         <div className={classes.root}>
           <Layout>
             {
-              this.state.lists ? this.state.lists.map(list => 
-                <Typography>{list.id}: {list.name}</Typography>
+              this.state.lists ? this.state.lists.map((list, index) => 
+                <Typography key={shortid.generate()}>{index + 1}: {list.name}</Typography>
               ) : <CircularProgress className={classes.loadingCircle} color="secondary" />
             }
           </Layout>
