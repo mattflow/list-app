@@ -6,7 +6,7 @@ const morgan = require('morgan');
 const app = express();
 const path = require('path');
 const cluster = require('cluster');
-const cpus = require('os').cpus();
+const cpus = process.env.WEB_CONCURRENCY || require('os').cpus();
 const mongoose = require('mongoose');
 const apiRouter = require('./routers/apiRouter');
 
