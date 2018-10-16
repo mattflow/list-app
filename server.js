@@ -6,7 +6,7 @@ const morgan = require('morgan');
 const app = express();
 const path = require('path');
 const cluster = require('cluster');
-const cpus = process.env.WEB_CONCURRENCY || require('os').cpus();
+const workers = process.env.WEB_CONCURRENCY || require('os').cpus().length;
 const mongoose = require('mongoose');
 const apiRouter = require('./routers/apiRouter');
 
@@ -34,9 +34,9 @@ app.use('/api', apiRouter);
 
 db.on('open', () => {
   if (process.env.NODE_ENV === 'production' && cluster.isMaster) {
-    cpus.forEach(() => {
+    for (let i = 0; i < workers; i++) {
       cluster.fork();
-    });
+    }
 
     cluster.on('exit', () => {
       cluster.fork();
