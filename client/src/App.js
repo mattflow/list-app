@@ -67,7 +67,7 @@ class App extends Component {
             {
               this.state.lists ? this.state.lists.map((list, index) => (
                 <Grid key={shortid.generate()} item xs={12} md={6}>
-                  <ListPaper name={list.name} createdAt={list.createdAt} />
+                  <ListPaper name={list.name} createdAt={list.createdAt} favorited={list.favorited} />
                 </Grid>
               )) : <CircularProgress className={classes.loadingCircle} color="secondary" />
             }
