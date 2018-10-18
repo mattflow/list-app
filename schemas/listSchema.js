@@ -3,21 +3,19 @@ const Schema = mongoose.Schema;
 const itemSchema = require('./itemSchema');
 
 const listSchema = new Schema({
-  name: String,
-  favorited: {
-    type: Boolean,
-    default: false,
+    name: String,
+    favorited: {
+      type: Boolean,
+      default: false,
+    },
+    items: [{
+      type: Schema.Types.ObjectId,
+      ref: 'Item',
+    }],
   },
-  createdAt: {
-    type: Date,
-    default: Date.now,
+  {
+    timestamps: true,
   },
-  updatedAt: Date,
-  archived: {
-    type: Boolean,
-    default: false,
-  },
-  items: [itemSchema],
-});
+);
 
 module.exports = listSchema;

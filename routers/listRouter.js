@@ -5,11 +5,26 @@ const mongoose = require('mongoose');
 
 const List = mongoose.model('List', listSchema);
 
+const publicSchema = {
+  name: 'String',
+  favorited: 'Boolean',
+  favoritedAt: {
+    type: 'Date',
+    optional: true, 
+  },
+};
+
+const incorrectSchemaResponse = {
+  success: false,
+  message: 'Must follow schema requirements',
+  listSchema: publicSchema,
+};
+
 router.prefix = 'lists';
 
 router.route('/')
   .get((req, res) => {
-    List.find({ archived: false }, (err, docs) => {
+    List.find({}, (err, docs) => {
       if (err) {
         res.send(err);
       } else {
@@ -19,8 +34,12 @@ router.route('/')
   })
   .post((req, res) => {
     console.log(req.body);
-    if (req.body.name) {
-      List.create({ name: req.body.name }, (err, list) => {
+    if (req.body.name && req.body.favorited) {
+      List.create({
+        name: req.body.name,
+        favorited: req.body.favorited,
+        favoritedAt: req.body.favoritedAt,
+      }, (err, list) => {
         if (err) {
           res.send(err);
         } else {
@@ -28,11 +47,51 @@ router.route('/')
         }
       });
     } else {
-      res.json({
-        message: 'Name must be included',
-        success: false,
-      });
+      res.json(incorrectSchemaResponse);
     }
+  });
+
+router.route('/:listId')
+  .get((req, res) => {
+    List.findById(req.params.listId, (err, list) => {
+      if (err) {
+        res.send(err);
+      } else {
+        res.json(list);
+      }
+    });
+  })
+  .put((req, res) => {
+    List.findById(req.params.listId, (err, list) => {
+      if (err) {
+        res.send(err);
+      } else if (req.body.name && req.body.favorited) {
+        list.name = req.body.name;
+        list.favorited = req.body.favorited;
+        list.favoritedAt = req.body.favoritedAt;
+        list.save((err, updatedList) => {
+          if (err) {
+            res.send(err);
+          } else {
+            res.json(updatedList);
+          }
+        });
+      } else {
+        res.json(incorrectSchemaResponse);
+      }
+    });
+  })
+  .delete((req, res) => {
+    List.deleteOne({ _id: req.params.listId }, (err) => {
+      if (err) {
+        res.send(err);
+      } else {
+        res.json({
+          success: true,
+          message: 'List successfully deleted',
+        });
+      }
+    });
   });
 
 module.exports = router;

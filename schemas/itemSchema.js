@@ -2,20 +2,20 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const itemSchema = new Schema({
-  name: String,
-  checked: {
-    type: Boolean,
-    default: false,
+    name: String,
+    checked: {
+      type: Boolean,
+      default: false,
+    },
+    checkedAt: Date,
+    list: {
+      type: Schema.Types.ObjectId,
+      ref: 'Item',
+    },
   },
-  createdAt: {
-    type: Date,
-    default: Date.now,
+  {
+    timestamps: true,
   },
-  updatedAt: Date,
-  archived: {
-    type: Boolean,
-    default: false,
-  },
-});
+);
 
 module.exports = itemSchema;
