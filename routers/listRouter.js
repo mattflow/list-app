@@ -33,7 +33,6 @@ router.route('/')
     });
   })
   .post((req, res) => {
-    console.log(req.body);
     if (req.body.name && req.body.favorited) {
       List.create({
         name: req.body.name,
@@ -65,7 +64,7 @@ router.route('/:listId')
     List.findById(req.params.listId, (err, list) => {
       if (err) {
         res.send(err);
-      } else if (req.body.name && req.body.favorited) {
+      } else if (req.body.name !== void 0 && req.body.favorited !== void 0) {
         list.name = req.body.name;
         list.favorited = req.body.favorited;
         list.favoritedAt = req.body.favoritedAt;
