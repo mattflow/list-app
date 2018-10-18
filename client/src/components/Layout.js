@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
+import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
@@ -100,11 +101,12 @@ class Layout extends React.Component {
           </Toolbar>
         </AppBar>
         <Hidden mdUp>
-          <Drawer
+          <SwipeableDrawer
             variant="temporary"
             anchor={theme.direction === 'rtl' ? 'right' : 'left'}
             open={this.state.mobileOpen}
             onClose={this.handleDrawerToggle}
+            onOpen={this.handleDrawerToggle}
             classes={{
               paper: classes.drawerPaper,
             }}
@@ -113,7 +115,7 @@ class Layout extends React.Component {
             }}
           >
             {drawer}
-          </Drawer>
+          </SwipeableDrawer>
         </Hidden>
         <Hidden smDown implementation="css">
           <Drawer
