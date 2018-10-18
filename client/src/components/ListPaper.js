@@ -44,7 +44,7 @@ function ListPaper(props) {
               {moment(props.createdAt).format('MM/DD/YY')}
             </Typography>
           </div>
-          <IconButton className={classes.favoriteButton} color="primary" aria-label="Favorite">
+          <IconButton onClick={props.onFavoriteClick} className={classes.favoriteButton} color="primary" aria-label="Favorite">
             {
               props.favorited ?
               <StarIcon /> :

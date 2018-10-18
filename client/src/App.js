@@ -9,6 +9,8 @@ import shortid from 'shortid';
 import Grid from '@material-ui/core/Grid';
 import ListPaper from './components/ListPaper';
 import { listFetchIntervalSeconds } from './config';
+import { deepCopy, putData } from './utils';
+import _ from 'lodash';
 
 const theme = createMuiTheme({
   palette: {
@@ -36,6 +38,7 @@ class App extends Component {
     this.state = {
       lists: undefined,
     };
+    this.handleFavoriteClick = this.handleFavoriteClick.bind(this);
   }
 
   fetchLists = (cb) => {
@@ -58,6 +61,26 @@ class App extends Component {
     clearInterval(this.fetchInterval);
   }
 
+  handleFavoriteClick(list) {
+    return () => {
+      const data = {
+        name: list.name,
+        favorited: !list.favorited,
+        favoritedAt: Date.now(),
+      };
+
+      const lists = this.state.lists.map(list => deepCopy(list));
+      const index = _.findIndex(lists, (o) => o._id === list._id);
+      lists[index].favorited = data.favorited;
+      lists[index].favoritedAt = data.favoritedAt;
+      this.setState({
+        lists,
+      });
+
+      putData(`/api/lists/${list._id}`, data);
+    }
+  }
+
   render() {
     const { classes } = this.props;
     return (
@@ -65,11 +88,14 @@ class App extends Component {
         <div className={classes.root}>
           <Layout>
             {
-              this.state.lists ? this.state.lists.map((list, index) => (
-                <Grid key={shortid.generate()} item xs={12} md={6}>
-                  <ListPaper name={list.name} createdAt={list.createdAt} favorited={list.favorited} />
-                </Grid>
-              )) : <CircularProgress className={classes.loadingCircle} color="secondary" />
+              this.state.lists ? _.sortBy(this.state.lists, 
+                (o) => {
+                  return !o.favorited;
+                }).map((list, index) => (
+                  <Grid key={shortid.generate()} item xs={12} md={6}>
+                    <ListPaper onFavoriteClick={this.handleFavoriteClick(list)} name={list.name} createdAt={list.createdAt} favorited={list.favorited} />
+                  </Grid>
+                  )) : <CircularProgress className={classes.loadingCircle} color="secondary" />
             }
           </Layout>
         </div>
