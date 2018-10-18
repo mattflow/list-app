@@ -73,9 +73,11 @@ class App extends Component {
       const index = _.findIndex(lists, (o) => o._id === list._id);
       lists[index].favorited = data.favorited;
       lists[index].favoritedAt = data.favoritedAt;
-      this.setState({
-        lists,
-      });
+      setTimeout(() => {
+        this.setState({
+          lists,
+        });
+      }, 240);
 
       putData(`/api/lists/${list._id}`, data);
     }
