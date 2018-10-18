@@ -77,7 +77,7 @@ class App extends Component {
         this.setState({
           lists,
         });
-      }, 240);
+      }, 250);
 
       putData(`/api/lists/${list._id}`, data);
     }
