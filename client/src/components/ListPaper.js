@@ -7,6 +7,7 @@ import IconButton from '@material-ui/core/IconButton';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import StarIcon from '@material-ui/icons/Star';
 import moment from 'moment';
+import ClearIcon from '@material-ui/icons/Clear';
 import { withStyles } from '@material-ui/core/styles';
 
 const styles = theme => ({
@@ -22,6 +23,14 @@ const styles = theme => ({
   },
   favoriteButton: {
     marginTop: theme.spacing.unit * -2,
+    marginLeft: theme.spacing.unit,
+  },
+  deleteContainer: {
+    float: 'right',
+  },
+  deleteButton: {
+    marginTop: theme.spacing.unit * -2,
+    marginLeft: 'auto',
   },
   toolbar: {
     paddingLeft: 0,
@@ -50,6 +59,9 @@ function ListPaper(props) {
               <StarIcon /> :
               <StarBorderIcon />
              }
+          </IconButton>
+          <IconButton onClick={props.onDeleteClick} aria-label="Delete" className={classes.deleteButton}>
+            <ClearIcon />
           </IconButton>
         </Toolbar>
         <Button className={classes.rightButton} variant="contained" color="secondary">Open</Button>

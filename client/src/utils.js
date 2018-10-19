@@ -13,14 +13,18 @@ function deepCopy(obj) {
 }
 
 function putData(url, data) {
-  return postPutData('PUT', url, data);
+  return httpMethod('PUT', url, data);
 }
 
 function postData(url, data) {
-  return postPutData('POST', url, data);
+  return httpMethod('POST', url, data);
 }
 
-function postPutData(method, url, data) {
+function deleteMethod(url) {
+  return httpMethod('DELETE', url);
+}
+
+function httpMethod(method, url, data = {}) {
   // Default options are marked with *
     return fetch(url, {
         method: method, // *GET, POST, PUT, DELETE, etc.
@@ -47,4 +51,5 @@ module.exports = {
   putData: putData,
   postData: postData,
   isDefined: isDefined,
+  deleteMethod: deleteMethod,
 };

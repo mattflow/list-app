@@ -8,8 +8,10 @@ import pink from '@material-ui/core/colors/pink';
 import shortid from 'shortid';
 import Grid from '@material-ui/core/Grid';
 import ListPaper from './components/ListPaper';
+import Button from '@material-ui/core/Button';
+import AddIcon from '@material-ui/icons/Add';
 import { listFetchIntervalSeconds } from './config';
-import { deepCopy, putData } from './utils';
+import { deepCopy, putData, deleteMethod } from './utils';
 import _ from 'lodash';
 
 const theme = createMuiTheme({
@@ -27,6 +29,11 @@ const styles = theme => ({
   loadingCircle: {
     display: 'block',
     margin: 'auto',
+  },
+  floatingAdd: {
+    right: 20,
+    bottom: 20,
+    position: 'fixed',
   },
 });
 
@@ -83,6 +90,23 @@ class App extends Component {
     }
   }
 
+  handleDeleteClick(list) {
+    return () => {
+      if (window.confirm('Are you sure you would like to delete this list?')) {
+        deleteMethod(`/api/lists/${list._id}`);
+
+        const lists = this.state.lists.map(list => deepCopy(list));
+        const index = _.findIndex(lists, (o) => o._id === list._id);
+        lists.splice(index, 1);
+        setTimeout(() => {
+          this.setState({
+            lists,
+          });
+        }, 250);
+      }
+    }
+  }
+
   render() {
     const { classes } = this.props;
     return (
@@ -95,10 +119,19 @@ class App extends Component {
                   return !o.favorited;
                 }).map((list, index) => (
                   <Grid key={shortid.generate()} item xs={12} md={6}>
-                    <ListPaper onFavoriteClick={this.handleFavoriteClick(list)} name={list.name} createdAt={list.createdAt} favorited={list.favorited} />
+                    <ListPaper 
+                      onDeleteClick={this.handleDeleteClick(list)} 
+                      onFavoriteClick={this.handleFavoriteClick(list)} 
+                      name={list.name} 
+                      createdAt={list.createdAt} 
+                      favorited={list.favorited} 
+                    />
                   </Grid>
-                  )) : <CircularProgress className={classes.loadingCircle} color="secondary" />
+                )) : <CircularProgress className={classes.loadingCircle} color="secondary" />
             }
+            <Button variant="fab" color="primary" aria-label="Add" className={classes.floatingAdd}>
+              <AddIcon />
+            </Button>
           </Layout>
         </div>
       </MuiThemeProvider>
