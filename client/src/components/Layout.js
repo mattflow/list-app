@@ -16,13 +16,17 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import HomeIcon from '@material-ui/icons/Home';
 import SettingsIcon from '@material-ui/icons/Settings';
-import Grid from '@material-ui/core/Grid';
+import { Link } from 'react-router-dom';
+
 
 const drawerWidth = 240;
 
 const styles = theme => ({
   root: {
     height: '100%',
+  },
+  notALink: {
+    textDecoration: 'none',
   },
   appBar: {
     marginLeft: drawerWidth,
@@ -67,12 +71,14 @@ class Layout extends React.Component {
         <div className={classes.toolbar} />
         <Divider />
         <List component="nav">
-          <ListItem button>
-            <ListItemIcon>
-              <HomeIcon />
-            </ListItemIcon>
-            <ListItemText primary="Home" />
-          </ListItem>
+          <Link className={classes.notALink} to="/">
+            <ListItem button>
+              <ListItemIcon>
+                <HomeIcon />
+              </ListItemIcon>
+              <ListItemText primary="Home" />
+            </ListItem>
+          </Link>
           <ListItem button>
             <ListItemIcon>
               <SettingsIcon />
@@ -130,9 +136,7 @@ class Layout extends React.Component {
         </Hidden>
         <main className={classes.content}>
           <div className={classes.toolbar} />
-          <Grid container spacing={16}>
-            {this.props.children}
-          </Grid>
+          {this.props.children}
         </main>
       </div>
     );

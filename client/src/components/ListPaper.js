@@ -8,6 +8,7 @@ import StarBorderIcon from '@material-ui/icons/StarBorder';
 import StarIcon from '@material-ui/icons/Star';
 import moment from 'moment';
 import ClearIcon from '@material-ui/icons/Clear';
+import { Link } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 
 const styles = theme => ({
@@ -47,15 +48,15 @@ function ListPaper(props) {
         <Toolbar className={classes.toolbar}>
           <div>
             <Typography variant="h5">
-              {props.name}
+              {props.list.name}
             </Typography>
             <Typography variant="caption">
-              {moment(props.createdAt).format('MM/DD/YY')}
+              {moment(props.list.createdAt).format('MM/DD/YY')}
             </Typography>
           </div>
           <IconButton onClick={props.onFavoriteClick} className={classes.favoriteButton} color="primary" aria-label="Favorite">
             {
-              props.favorited ?
+              props.list.favorited ?
               <StarIcon /> :
               <StarBorderIcon />
              }
@@ -64,7 +65,9 @@ function ListPaper(props) {
             <ClearIcon />
           </IconButton>
         </Toolbar>
-        <Button className={classes.rightButton} variant="contained" color="secondary">Open</Button>
+        <Link to={"/list/" + props.list._id}>
+          <Button className={classes.rightButton} variant="contained" color="secondary">Open</Button>
+        </Link>
       </Paper>
     </div>
   );
