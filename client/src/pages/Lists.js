@@ -110,22 +110,23 @@ class Lists extends Component {
   }
 
   handleNewListConfirm = () => {
-    const list = {
-      name: this.state.newListName,
-      favorited: false,
-      createdAt: Date.now(),
-    };
+    if (this.state.newListName.trim() !== '') {
+      clearInterval(this.fetchInterval);
+      const list = {
+        name: this.state.newListName,
+        favorited: false,
+      };
+      const lists = this.state.lists.map(list => deepCopy(list));
 
-    postData('/api/lists', list);
-
-    const lists = this.state.lists.map(list => deepCopy(list));
-    lists.push(list);
-
-    this.setState({
-      lists,
-    });
-
-    this.handleNewListClose();
+      postData('/api/lists', list).then(newList => {
+        this.fetchInterval = window.setInterval(this.fetchLists, fetchIntervalTime);
+        lists.push(newList);
+        this.setState({
+          lists,
+        });
+        this.handleNewListClose();
+      });
+    }
   }
 
   handleNewListNameChange = (e) => {
