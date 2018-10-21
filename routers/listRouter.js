@@ -33,7 +33,7 @@ router.route('/')
     });
   })
   .post((req, res) => {
-    if (req.body.name && req.body.favorited) {
+    if (req.body.name !== void 0 && req.body.favorited !== void 0) {
       List.create({
         name: req.body.name,
         favorited: req.body.favorited,

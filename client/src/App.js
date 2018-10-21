@@ -10,9 +10,11 @@ import Grid from '@material-ui/core/Grid';
 import ListPaper from './components/ListPaper';
 import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
+import ConfirmDialog from './components/ConfirmDialog';
 import { listFetchIntervalSeconds } from './config';
-import { deepCopy, putData, deleteMethod } from './utils';
+import { deepCopy, putData, postData, deleteMethod } from './utils';
 import _ from 'lodash';
+import TextField from '@material-ui/core/TextField';
 
 const theme = createMuiTheme({
   palette: {
@@ -44,6 +46,8 @@ class App extends Component {
     super();
     this.state = {
       lists: undefined,
+      showCreateListDialog: false,
+      newListName: '',
     };
     this.handleFavoriteClick = this.handleFavoriteClick.bind(this);
   }
@@ -107,6 +111,51 @@ class App extends Component {
     }
   }
 
+  handleNewListClose = () => {
+    this.setState({
+      showCreateListDialog: false,
+      newListName: '',
+    });
+  }
+
+  handleNewListClick = () => {
+    this.setState({
+      showCreateListDialog: true,
+    });
+  }
+
+  handleNewListConfirm = () => {
+    const list = {
+      name: this.state.newListName,
+      favorited: false,
+      createdAt: Date.now(),
+    };
+
+    postData('/api/lists', list);
+
+    const lists = this.state.lists.map(list => deepCopy(list));
+    lists.push(list);
+
+    this.setState({
+      lists,
+    });
+
+    this.handleNewListClose();
+  }
+
+  handleNewListNameChange = (e) => {
+    this.setState({
+      newListName: e.target.value,
+    });
+  }
+
+  handleNewListNameInput = (e) => {
+    const keyCode = e.which || e.keyCode;
+    if (keyCode === 13) {
+      this.handleNewListConfirm();
+    }
+  }
+
   render() {
     const { classes } = this.props;
     return (
@@ -129,9 +178,30 @@ class App extends Component {
                   </Grid>
                 )) : <CircularProgress className={classes.loadingCircle} color="secondary" />
             }
-            <Button variant="fab" color="primary" aria-label="Add" className={classes.floatingAdd}>
+            <Button onClick={this.handleNewListClick} variant="fab" color="primary" aria-label="Add" className={classes.floatingAdd}>
               <AddIcon />
             </Button>
+            <ConfirmDialog
+              open={this.state.showCreateListDialog}
+              onClose={this.handleNewListClose}
+              onConfirm={this.handleNewListConfirm}
+              title="New List"
+              confirmButton="Create"
+              closeButton="Cancel"
+            >
+              <TextField
+                autoFocus
+                margin="dense"
+                id="name"
+                label="Name"
+                type="text"
+                fullWidth
+                value={this.state.newListName}
+                onChange={this.handleNewListNameChange}
+                onKeyPress={this.handleNewListNameInput}
+                placeholder="Groceries..."
+              />
+            </ConfirmDialog>
           </Layout>
         </div>
       </MuiThemeProvider>
