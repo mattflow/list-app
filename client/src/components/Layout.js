@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
-import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
@@ -16,41 +14,49 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import HomeIcon from '@material-ui/icons/Home';
 import SettingsIcon from '@material-ui/icons/Settings';
-import { Link } from 'react-router-dom';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import { createMuiTheme, MuiThemeProvider, withStyles } from '@material-ui/core/styles';
+import { pink, blue } from '@material-ui/core/colors';
+import { withRouter } from 'react-router-dom';
 
+const muiTheme = createMuiTheme({
+  palette: {
+    primary: blue,
+    secondary: pink,
+  },
+});
 
 const drawerWidth = 240;
 
 const styles = theme => ({
   root: {
-    height: '100%',
+    display: 'flex',
   },
-  notALink: {
-    textDecoration: 'none',
+  drawer: {
+    [theme.breakpoints.up('sm')]: {
+      width: drawerWidth,
+      flexShrink: 0,
+    },
   },
   appBar: {
     marginLeft: drawerWidth,
-    [theme.breakpoints.up('md')]: {
+    [theme.breakpoints.up('sm')]: {
       width: `calc(100% - ${drawerWidth}px)`,
     },
   },
-  navIconHide: {
-    [theme.breakpoints.up('md')]: {
+  menuButton: {
+    marginRight: 20,
+    [theme.breakpoints.up('sm')]: {
       display: 'none',
     },
-  },
-  titleText: {
-    marginLeft: theme.spacing.unit * 2,
   },
   toolbar: theme.mixins.toolbar,
   drawerPaper: {
     width: drawerWidth,
   },
   content: {
+    flexGrow: 1,
     padding: theme.spacing.unit * 3,
-    [theme.breakpoints.up('md')]: {
-      marginLeft: drawerWidth,
-    },
   },
 });
 
@@ -63,6 +69,15 @@ class Layout extends React.Component {
     this.setState(state => ({ mobileOpen: !state.mobileOpen }));
   };
 
+  handleLinkClick = (route) => {
+    return () => {
+      this.props.history.push(route);
+      this.setState({
+        mobileOpen: false,
+      });
+    }
+  }
+
   render() {
     const { classes, theme } = this.props;
 
@@ -70,19 +85,13 @@ class Layout extends React.Component {
       <div>
         <div className={classes.toolbar} />
         <Divider />
-        <List component="nav">
-          <Link className={classes.notALink} to="/">
-            <ListItem button>
-              <ListItemIcon>
-                <HomeIcon />
-              </ListItemIcon>
-              <ListItemText primary="Home" />
-            </ListItem>
-          </Link>
+        <List>
+          <ListItem onClick={this.handleLinkClick('/')} button>
+            <ListItemIcon><HomeIcon /></ListItemIcon>
+            <ListItemText primary="Home" />
+          </ListItem>
           <ListItem button>
-            <ListItemIcon>
-              <SettingsIcon />
-            </ListItemIcon>
+            <ListItemIcon><SettingsIcon /></ListItemIcon>
             <ListItemText primary="Settings" />
           </ListItem>
         </List>
@@ -90,55 +99,59 @@ class Layout extends React.Component {
     );
 
     return (
-      <div className={classes.root}>
-        <AppBar className={classes.appBar}>
-          <Toolbar>
-            <IconButton
-              color="inherit"
-              aria-label="Open drawer"
-              onClick={this.handleDrawerToggle}
-              className={classes.navIconHide}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography className={classes.titleText} variant="h6" color="inherit" noWrap>
-              List App
-            </Typography>
-          </Toolbar>
-        </AppBar>
-        <Hidden mdUp>
-          <SwipeableDrawer
-            variant="temporary"
-            anchor={theme.direction === 'rtl' ? 'right' : 'left'}
-            open={this.state.mobileOpen}
-            onClose={this.handleDrawerToggle}
-            onOpen={this.handleDrawerToggle}
-            classes={{
-              paper: classes.drawerPaper,
-            }}
-            ModalProps={{
-              keepMounted: true,
-            }}
-          >
-            {drawer}
-          </SwipeableDrawer>
-        </Hidden>
-        <Hidden smDown implementation="css">
-          <Drawer
-            variant="permanent"
-            open
-            classes={{
-              paper: classes.drawerPaper,
-            }}
-          >
-            {drawer}
-          </Drawer>
-        </Hidden>
-        <main className={classes.content}>
-          <div className={classes.toolbar} />
-          {this.props.children}
-        </main>
-      </div>
+      <MuiThemeProvider theme={muiTheme}>
+        <CssBaseline />
+        <div className={classes.root}>
+          <AppBar position="fixed" className={classes.appBar}>
+            <Toolbar>
+              <IconButton
+                color="inherit"
+                aria-label="Open drawer"
+                onClick={this.handleDrawerToggle}
+                className={classes.menuButton}
+              >
+                <MenuIcon />
+              </IconButton>
+              <Typography variant="h6" color="inherit" noWrap>
+                List App
+              </Typography>
+            </Toolbar>
+          </AppBar>
+          <nav className={classes.drawer}>
+            <Hidden smUp implementation="css">
+              <Drawer
+                variant="temporary"
+                anchor={theme.direction === 'rtl' ? 'right' : 'left'}
+                open={this.state.mobileOpen}
+                onClose={this.handleDrawerToggle}
+                classes={{
+                  paper: classes.drawerPaper,
+                }}
+                ModalProps={{
+                  keepMounted: true,
+                }}
+              >
+                {drawer}
+              </Drawer>
+            </Hidden>
+            <Hidden xsDown implementation="css">
+              <Drawer
+                classes={{
+                  paper: classes.drawerPaper,
+                }}
+                variant="permanent"
+                open
+              >
+                {drawer}
+              </Drawer>
+            </Hidden>
+          </nav>
+          <main className={classes.content}>
+            <div className={classes.toolbar} />
+            {this.props.children}
+          </main>
+        </div>
+      </MuiThemeProvider>
     );
   }
 }
@@ -148,4 +161,4 @@ Layout.propTypes = {
   theme: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles, { withTheme: true })(Layout);
+export default withStyles(styles, { withTheme: true })(withRouter(Layout));
