@@ -11,6 +11,7 @@ import ConfirmDialog from '../components/ConfirmDialog';
 import { listFetchIntervalSeconds } from '../config';
 import { deepCopy, putData, postData, deleteMethod } from '../utils';
 import TextField from '@material-ui/core/TextField';
+import update from 'immutability-helper';
 
 const styles = theme => ({
   loadingCircle: {
@@ -34,7 +35,6 @@ class Lists extends Component {
       showCreateListDialog: false,
       newListName: '',
     };
-    this.handleFavoriteClick = this.handleFavoriteClick.bind(this);
   }
 
   fetchLists = (cb) => {
@@ -57,7 +57,7 @@ class Lists extends Component {
     clearInterval(this.fetchInterval);
   }
 
-  handleFavoriteClick(list) {
+  handleFavoriteClick = (list) => {
     return () => {
       const data = {
         name: list.name,
@@ -79,7 +79,7 @@ class Lists extends Component {
     }
   }
 
-  handleDeleteClick(list) {
+  handleDeleteClick = (list) => {
     return () => {
       if (window.confirm('Are you sure you would like to delete this list?')) {
         deleteMethod(`/api/lists/${list._id}`);
@@ -116,14 +116,13 @@ class Lists extends Component {
         name: this.state.newListName,
         favorited: false,
       };
-      const lists = this.state.lists.map(list => deepCopy(list));
 
       postData('/api/lists', list).then(newList => {
         this.fetchInterval = window.setInterval(this.fetchLists, fetchIntervalTime);
-        lists.push(newList);
-        this.setState({
-          lists,
+        const newState = update(this.state, {
+          lists: { $push: [list] },
         });
+        this.setState(newState);
         this.handleNewListClose();
       });
     }
