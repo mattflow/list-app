@@ -145,7 +145,7 @@ class List extends Component {
   handleNewItemNameKeyPress = (e) => {
     const keyCode = e.which || e.keyCode;
 
-    if (keyCode === 13) {
+    if (this.state.newItemName.trim() !== '' && keyCode === 13) {
       this.handleNewItemButtonClick();
     }
   }
