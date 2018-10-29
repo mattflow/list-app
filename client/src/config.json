@@ -1,3 +1,4 @@
 {
-  "listFetchIntervalSeconds": 60
+  "listsFetchIntervalSeconds": 60,
+  "listFetchIntervalSeconds": 8
 }

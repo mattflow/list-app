@@ -126,10 +126,7 @@ router.route('/:listId/items')
               if (err) {
                 res.send(err);
               } else {
-                res.json({
-                  success: true,
-                  message: 'Item created successfully',
-                });
+                res.json(item);
               }
             });
           }

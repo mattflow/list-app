@@ -8,7 +8,7 @@ import ListPaper from '../components/ListPaper';
 import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
 import ConfirmDialog from '../components/ConfirmDialog';
-import { listFetchIntervalSeconds } from '../config';
+import { listsFetchIntervalSeconds } from '../config';
 import { deepCopy, putData, postData, deleteMethod } from '../utils';
 import TextField from '@material-ui/core/TextField';
 import update from 'immutability-helper';
@@ -25,7 +25,7 @@ const styles = theme => ({
   },
 });
 
-const fetchIntervalTime = listFetchIntervalSeconds * 1000;
+const fetchIntervalTime = listsFetchIntervalSeconds * 1000;
 
 class Lists extends Component {
   constructor() {
