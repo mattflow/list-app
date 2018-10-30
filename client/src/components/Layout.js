@@ -90,10 +90,10 @@ class Layout extends React.Component {
             <ListItemIcon><HomeIcon /></ListItemIcon>
             <ListItemText primary="Home" />
           </ListItem>
-          <ListItem button>
+          {/*<ListItem button>
             <ListItemIcon><SettingsIcon /></ListItemIcon>
             <ListItemText primary="Settings" />
-          </ListItem>
+          </ListItem>*/}
         </List>
       </div>
     );
