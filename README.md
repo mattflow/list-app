@@ -20,7 +20,8 @@ Make sure you have the heroku cli tool installed and you are logged in.
 then:
 
 ```sh
-heroku create
+heroku create application-name
+heroku git:remote -a application-name
 yarn deploy # or npm run deploy
 ```
 
