@@ -5,10 +5,8 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
 import Hidden from '@material-ui/core/Hidden';
 import Divider from '@material-ui/core/Divider';
-import MenuIcon from '@material-ui/icons/Menu';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -16,7 +14,7 @@ import HomeIcon from '@material-ui/icons/Home';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { createMuiTheme, MuiThemeProvider, withStyles } from '@material-ui/core/styles';
 import { pink, blue } from '@material-ui/core/colors';
-import { withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 
 const muiTheme = createMuiTheme({
   palette: {
@@ -38,10 +36,10 @@ const styles = theme => ({
     },
   },
   appBar: {
-    marginLeft: drawerWidth,
-    [theme.breakpoints.up('sm')]: {
-      width: `calc(100% - ${drawerWidth}px)`,
-    },
+    // marginLeft: drawerWidth,
+    // [theme.breakpoints.up('sm')]: {
+    //   width: `calc(100% - ${drawerWidth}px)`,
+    // },
   },
   menuButton: {
     marginRight: 20,
@@ -103,20 +101,20 @@ class Layout extends React.Component {
         <div className={classes.root}>
           <AppBar position="fixed" className={classes.appBar}>
             <Toolbar>
-              <IconButton
+              {/* <IconButton
                 color="inherit"
                 aria-label="Open drawer"
                 onClick={this.handleDrawerToggle}
                 className={classes.menuButton}
               >
                 <MenuIcon />
-              </IconButton>
-              <Typography variant="h6" color="inherit" noWrap>
+              </IconButton> */}
+              <Typography style={{ textDecoration: 'none' }} component={Link} to="/" variant="h6" color="inherit" noWrap>
                 List App
               </Typography>
             </Toolbar>
           </AppBar>
-          <nav className={classes.drawer}>
+          {/* <nav className={classes.drawer}>
             <Hidden smUp implementation="css">
               <Drawer
                 variant="temporary"
@@ -144,7 +142,7 @@ class Layout extends React.Component {
                 {drawer}
               </Drawer>
             </Hidden>
-          </nav>
+          </nav> */}
           <main className={classes.content}>
             <div className={classes.toolbar} />
             {this.props.children}
