@@ -13,7 +13,7 @@ const apiRouter = require('./routers/apiRouter');
 const port = process.env.PORT || 8080;
 const loggingType = process.env.LOGGING_TYPE || 'dev';
 const clientPath = path.join(__dirname, 'client/build');
-const mongodbUri = process.env.MONGODB_URI || 'mongodb://user:password1@ds053459.mlab.com:53459/list-app-dev';
+const mongodbUri = process.env.MONGODB_URI || 'mongodb://localhost:27017';
 
 mongoose.connect(mongodbUri);
 const db = mongoose.connection;

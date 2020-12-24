@@ -120,7 +120,7 @@ class Lists extends Component {
       postData('/api/lists', list).then(newList => {
         this.fetchInterval = window.setInterval(this.fetchLists, fetchIntervalTime);
         const newState = update(this.state, {
-          lists: { $push: [list] },
+          lists: { $push: [newList] },
         });
         this.setState(newState);
         this.handleNewListClose();
